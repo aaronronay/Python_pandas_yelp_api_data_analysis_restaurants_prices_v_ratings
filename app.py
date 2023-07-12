@@ -7,9 +7,13 @@ from scipy import stats
 from config import api_key
 
 def get_businesses(location):
-    client = YelpAPI(api_key)
-    businesses = [client.search_query(location=location, limit=1, offset=i)["businesses"][0] for i in range(1000)]
-    return pd.DataFrame.from_dict(businesses)
+    try:
+        client = YelpAPI(api_key)
+        businesses = [client.search_query(location=location, limit=1, offset=i)["businesses"][0] for i in range(1000)]
+        return pd.DataFrame.from_dict(businesses)
+    except Exception as e:
+        print(f"Error occurred while retrieving data for location '{location}': {e}")
+        return pd.DataFrame()
 
 def plot_scatter(data):
     plt.scatter(data["price"], data["rating"], marker="o", facecolors="red", edgecolors="black")
@@ -18,7 +22,11 @@ def plot_boxplot(data):
     data.boxplot("rating", by="price", figsize=(10, 5))
 
 def perform_anova(groups):
-    return stats.f_oneway(*groups)
+    try:
+        return stats.f_oneway(*groups)
+    except Exception as e:
+        print(f"Error occurred during statistical analysis: {e}")
+        return None
 
 def describe_data(data):
     return data.describe()
@@ -37,8 +45,9 @@ clean_data = {}
 # Retrieve data for each city
 for city, location in cities.items():
     raw_data = get_businesses(location)
-    clean_data[city] = raw_data[['price', 'rating']].dropna().astype({"price": str})
-    clean_data[city]['price_length'] = clean_data[city]['price'].apply(len)
+    if not raw_data.empty:
+        clean_data[city] = raw_data[['price', 'rating']].dropna().astype({"price": str})
+        clean_data[city]['price_length'] = clean_data[city]['price'].apply(len)
 
 # Scatter plot for each city
 plt.figure(figsize=(10, 6))
@@ -60,7 +69,9 @@ plt.show()
 results = {}
 for city, data in clean_data.items():
     groups = [data[data["price"] == i]["rating"] for i in range(1, 5)]
-    results[city] = perform_anova(groups)
+    result = perform_anova(groups)
+    if result is not None:
+        results[city] = result
 
 # Descriptive statistics for each city
 statistics = {}
