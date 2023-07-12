@@ -1,20 +1,13 @@
-# group_project_yelp
+Restaurant Data Analysis App
 
-Write a description of the scope of your research
-The intent of this project is to examine the relationship between yelp rating and price point.  
+This application performs an analysis of restaurant data using the Yelp API. The app has the following functionalities:
 
-Project Title
-Does star rating influence price point?
+- Retrieving restaurant data for various cities.
+- Cleaning and processing the data.
+- Generating visualizations, including scatter plots and box plots.
+- Performing statistical analysis using ANOVA.
+- Computing descriptive statistics.
 
-Team Members
-Talemanie Borsay
-Aaron Ronay
-John McDonald
+The app utilizes the Yelp API to retrieve restaurant data from different cities. The data is then cleaned and processed to remove any missing values. Visualizations such as scatter plots and box plots are generated to analyze the relationship between price and rating. The app also performs statistical analysis, specifically ANOVA, to explore differences among different price levels. Descriptive statistics are computed to provide a summary of the data.
 
-
-
-Research Questions to Answer
-Is there a relationship between yelp rating and price point.
-
-Data Sets to be Used
-https://www.yelp.com/dataset
+Overall, this app provides insights and analysis on restaurant data, helping users understand trends and patterns in different cities.
